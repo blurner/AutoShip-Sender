@@ -1,0 +1,1 @@
+{  "name": "Auto-ship Sender",  "version": "1.0",  "description": "Automatically sends a group of ships in MineThings.",  "options_page": "options.html",  "browser_action": {    "default_icon": "icon.ico",    "popup": "popup.html"  },  "permissions": [    "http://*.minethings.com/","tabs"  ]}

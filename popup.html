@@ -1,0 +1,28 @@
+<HTML>
+<HEAD>
+<style>
+BODY {
+min-width:310px;
+overflow-x:hidden;
+}
+.TextBoxes {
+position:absolute;
+left:150px;
+}
+</style>
+<script src="JavaScript.js">
+</script>
+</HEAD>
+
+
+<BODY onload="init()">
+<div id="MainDiv">
+<div id="Boxes">
+Starting Location: <input type="text" name="shipLocation" id="ShipLocation" class="TextBoxes"/><br /><br />
+Destination: <input type="text" name="shipDestination" id="ShipDestination" class="TextBoxes"/><br /><br />
+Ship 1 URL: <input type="text" name="ship1URL" id="Ship1URL" class="TextBoxes"/>
+</div>
+<button id="SubmitButton">Submit</button><button id="ls">localStorage</button>
+</div>
+</BODY>
+</HTML>

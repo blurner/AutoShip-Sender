@@ -1,0 +1,149 @@
+<html>
+<head>
+<title>Profiles</title>
+<style>
+BODY {
+min-width:310px;
+overflow-x:hidden;
+}
+.TextBoxes {
+position:absolute;
+left:200px;
+}
+</style>
+<script type="text/javascript">
+window.onload = function() {restore_options();};
+var count = 1;
+
+function restore_options() {
+	localStorage["profiles"] = "1,2,3,4,5";
+	var profiles = localStorage["profiles"].split(",");
+	if(profiles) {
+		for(var i=0; i<profiles.length; i++) {
+			var option = document.createElement("option");
+			var value = document.createAttribute("value");
+			value.nodeValue = profiles[i];
+			option.innerHTML = profiles[i];
+			option.setAttributeNode(value);
+			document.getElementById("profiles").appendChild(option);
+		}
+		updateInfo("1");
+	}
+}
+function updateInfo(name) {
+	localStorage["1"] = "my house,your house,google.com,yahoo.com,facebook.com,lol.com,teehee,oh herro der";
+	localStorage["2"] = "test,test,test,test,test;
+	var boxes = document.getElementById("boxes");
+	boxes.innerHTML = "";
+	var data;
+	if(localStorage[name]) {
+		data = localStorage[name].split(",");
+	}
+	var newbox = document.createElement("input");
+	var newboxtype = document.createAttribute("type");
+	var newboxid = document.createAttribute("id");
+	var newboxclass = document.createAttribute("class");
+	var newboxalt = document.createAttribute("alt");
+
+	newboxtype.nodeValue = "text";
+	newboxid.nodeValue = "ShipLocation";
+	newboxclass.nodeValue = "TextBoxes";
+	newboxalt.nodeValue = "false";
+	
+	newbox.setAttributeNode(newboxtype);
+	newbox.setAttributeNode(newboxid);
+	newbox.setAttributeNode(newboxclass);
+	newbox.setAttributeNode(newboxalt);
+	
+	boxes.innerHTML += "Starting Location: ";
+	boxes.appendChild(newbox);
+	boxes.innerHTML += "<br /><br />";
+	boxes.innerHTML += "Destination: ";
+	newbox.id = "ShipDestination";
+	boxes.appendChild(newbox);
+	boxes.innerHTML += "<br /><br />";
+	
+	if(data && data.length>2) {
+		for(var i=0; i<data.length-2; i++) {
+			boxes.innerHTML += "Ship"+(i+1)+"Url: ";
+			newbox.id = "Ship"+(i+1)+"Url";
+			newbox.alt = "true";
+			boxes.appendChild(newbox);
+			boxes.innerHTML += "<br /><br />";
+		}
+		boxes.innerHTML += "Ship"+(data.length-1)+"Url: ";
+		newbox.id = "Ship"+(data.length-1)+"Url";
+		newbox.onclick = function() {alert(newbox.id);};
+		boxes.appendChild(newbox);
+		boxes.innerHTML += "<br /><br />";
+		count = data.length-1;
+	} else {
+		count = 1;
+		boxes.innerHTML += "Ship"+count+"Url: ";
+		newbox.id = "Ship"+count+"Url";
+		newbox.onclick = function() {alert(newbox.id);};
+		boxes.appendChild(newbox);
+		boxes.innerHTML += "<br /><br />";
+	}
+	
+
+	for(var i=0; i<data.length; i++) {
+		document.getElementsByTagName("input")[i].value = data[i];
+	}
+}
+
+function addBox(boxid) {
+	var box = document.getElementById(boxid);
+	var boxes = document.getElementById("boxes");
+	if(box.alt == "false") {
+		box.alt = "true";
+		
+		var newbox = document.createElement("input");
+		var newboxtype = document.createAttribute("type");
+		var newboxid = document.createAttribute("id");
+		var newboxclass = document.createAttribute("class");
+		var newboxalt = document.createAttribute("alt");
+		
+		newboxtype.nodeValue = "text";
+		newboxid.nodeValue = "Ship"+(count+1)+"URL";
+		newboxclass.nodeValue = "TextBoxes";
+		newboxalt.nodeValue = "false";	
+		
+		newbox.setAttributeNode(newboxtype);
+		newbox.setAttributeNode(newboxid);
+		newbox.setAttributeNode(newboxclass);
+		newbox.setAttributeNode(newboxalt);
+		newbox.addEventListener("focus", function() {addBox(this.id);}, true);
+		
+		var arr = new Array();
+		for(var i=0; i<boxes.childNodes.length; i++) {
+			arr[arr.length] = boxes.childNodes[i].value;
+		}
+		boxes.innerHTML += "<br /><br />";
+		boxes.innerHTML += "Ship "+(count+1)+" URL: ";
+		boxes.appendChild(newbox);
+		for(var i=0; i<boxes.childNodes.length-1; i++) {
+			boxes.childNodes[i].value = arr[i];
+		}
+		document.body.scrollTop = document.body.scrollHeight;
+		count++;
+		document.getElementById(boxid).focus();
+	}
+}
+
+function changed() {
+	var select = document.getElementById("profiles");
+	updateInfo(select.options[select.selectedIndex].value);
+}
+</script>
+</head>
+
+<body>
+Profiles:
+<select id="profiles" onchange="changed()">
+</select>
+<br>
+<div id="boxes">
+</div>
+</body>
+</html>
